@@ -13,16 +13,13 @@
  * 
  * At the end, return the modified image.
  * 
- * Idea:
- * Use breadth first search on the given location, start off by marking the positions to be updated as -1,
- * Then in breadth first manner, try visiting the 4 neighbouts and continue until termination.
  * 
  * Space Complexity: O(mn)
  * Time Complexity: O(mn)
  * 
  */
  
- class Solution {
+class Solution {
     
     int[] dx = new int[]{-1, 0, 1, 0};
     int[] dy = new int[]{0, 1, 0, -1};
