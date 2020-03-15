@@ -51,21 +51,21 @@ public class CourseSchedule {
             return false;
         }
         // we want to generate a topological ordering
-        int topNum = numCourses;
+        int count = numCourses;
         while (queue.size() > 0) {
-            int course = queue.remove();
-            topNum--;
-            List<Integer> courses = graph.get(course);
-            for (int c : courses) {
-                // we are taking course c, so reduce indegree of edge c to corresponding course
-                indegree[c]--;
-                if (indegree[c] == 0) {
-                    queue.add(c);
+            int currentCourse = queue.remove();
+            count--;
+            List<Integer> correspondingCourses = graph.get(currentCourse);
+            for (int course : correspondingCourses) {
+                // we are taking course, so reduce indegree of edge course to corresponding course
+                indegree[course]--;
+                if (indegree[course] == 0) {
+                    queue.add(course);
                 }
             }
         }
-        // if a topo order consisting of all nodes has been generated, topNum should be
+        // if a topo order consisting of all nodes has been generated, count should be
         // 0.
-        return topNum == 0;
+        return count == 0;
     }
 }
