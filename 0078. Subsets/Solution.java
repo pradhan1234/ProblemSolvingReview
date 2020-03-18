@@ -20,7 +20,7 @@ class Solution {
     private void backtrack(List<List<Integer>> result, List<Integer> state, int[] nums, int cursor) {
         // add current state to result
         result.add(new LinkedList<>(state));
-        // recurse by choosing/skipping the element
+        // backtrack
         for (int i = cursor; i < nums.length; i++) {
             state.add(nums[i]); // add candidate
             backtrack(result, state, nums, i + 1);
