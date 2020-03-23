@@ -29,29 +29,35 @@ class Twitter {
     public List<Integer> getNewsFeed(int userId) {
         // check
         isFirstTime(userId);
-        // get feeds
-        List<Tweet> feeds = new ArrayList<>();
+        // custom comparator
+        Comparator<Tweet> comparator = new Comparator<>() { // minHeap
+            public int compare(Tweet a, Tweet b) {
+                return a.createdAt - b.createdAt;
+            }
+        };
+
+        PriorityQueue<Tweet> pq = new PriorityQueue<>(comparator);
         Set<Integer> followees = userFollowsMap.get(userId);
         for(int followee: followees) {
             List<Tweet> followeeTweet = userTweetsMap.get(followee);
-            feeds.addAll(followeeTweet);
+
+            for(Tweet tweet: followeeTweet) {
+                pq.add(tweet);
+                if(pq.size() > feedSize) {
+                    pq.poll();
+                }
+            }
         }
 
-        // order by most recent
-        Collections.sort(feeds, (t1,t2) -> t2.createdAt - t1.createdAt);
-
-        // get 'feedSize most recent' tweets
-        Iterator<Tweet> iterator = feeds.iterator();
-
-        List<Integer> recentFeed = new ArrayList<>();
+        LinkedList<Integer> recentFeed = new LinkedList<>();
         int count = feedSize;
 
-        while(count > 0 && iterator.hasNext()) {
-            recentFeed.add(iterator.next().tweetId);
+        while(count > 0) {
+            Tweet tweet = pq.poll();
+            if(tweet == null) return recentFeed;
+            recentFeed.addFirst(tweet.tweetId);
             count--;
         }
-
-        return recentFeed;
     }
 
     /** Follower follows a followee. If the operation is invalid, it should be a no-op. */

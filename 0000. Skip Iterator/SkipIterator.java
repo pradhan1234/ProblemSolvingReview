@@ -35,10 +35,11 @@ public class SkipIterator implements Iterator<Integer> {
         // seek strictly!!!
         // caller knows what they are doing when calling seek
         cursor = null;
-        while (cursor == null && iterator.hasNext()) {
+        while (iterator.hasNext()) {
             Integer element = iterator.next();
             if (!skipCount.containsKey(element)) {
                 cursor = element;
+                break;
             } else {
                 skipCount.put(element, skipCount.get(element) - 1);
                 skipCount.remove(element, 0);
